@@ -12,7 +12,6 @@ function App() {
     <Navbar></Navbar>
     <div>
     <div className='typewriter'>
-    <TerminalIcon className='icon'></TerminalIcon>
     <Typewriter
   options={{
     strings: ['HACK', 'IT', 'IF', 'YOU', 'CAN'],
