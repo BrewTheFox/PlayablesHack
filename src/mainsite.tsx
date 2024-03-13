@@ -10,9 +10,9 @@ function App() {
   return (
     <>
     <Navbar></Navbar>
-    <TerminalIcon className='icon'></TerminalIcon>
-    <TerminalIcon className='icon2'></TerminalIcon>
+    <div>
     <div className='typewriter'>
+    <TerminalIcon className='icon'></TerminalIcon>
     <Typewriter
   options={{
     strings: ['HACK', 'IT', 'IF', 'YOU', 'CAN'],
@@ -20,6 +20,7 @@ function App() {
     loop: true,
   }} 
   ></Typewriter>
+  </div>
     </div>
     <div className='container'>
     <div>

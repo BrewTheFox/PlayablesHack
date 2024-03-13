@@ -7,9 +7,11 @@
 }
 
 .container {
-  position: relative; /* Cambiado a relativo para que los elementos internos se posicionen correctamente */
+  position: absolute; /* Cambiado a relativo para que los elementos internos se posicionen correctamente */
   text-align: center;
-  margin-top: 20px; /* Agregado un margen superior para separar del borde superior */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0%);
 }
 
 .logo:hover {
@@ -18,7 +20,6 @@
 
 .typewriter {
   position: relative; /* Cambiado a relativo para que se posicione correctamente dentro del contenedor */
-  display: flex;
   flex-direction: column; /* Alinear los elementos verticalmente */
   align-items: center; /* Alinear los elementos horizontalmente */
 }
@@ -28,16 +29,15 @@
 }
 
 .icon {
-  position: absolute;
-  top: 14%;
-  left: 19%;
+  text-align: center;
   transform: scale(3);
+  position: absolute;
+  transform: scale(5);
+  bottom: 40%;
+  left: -90%;
 }
 
 .icon2 {
-  position: absolute;
-  top: 14%;
-  left: 74%;
   transform: scale(3);
 }
 
@@ -50,11 +50,13 @@
     position: absolute;
     left: 50%;
     top: 40%;
-    display: flex;
     transform: translate(-50%, -50%);
   }
   .container{
-    margin-top: 25em;
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .typewriter span {
@@ -64,14 +66,15 @@
   
 
   .icon{
+    position: absolute;
     transform: scale(5);
-    top: 38.5%;
-    left: 40%;
+    bottom: 40%;
+    left: -90%;
   }
   .icon2 {
+    position: absolute;
     transform: scale(5); /* Ajustar el tamaño de la escala para pantallas más grandes */
-    top: 38.5%;
-    left: 58%;
+
   }
 
 }
