@@ -1,16 +1,77 @@
 .logo {
-  width: 30%;
+  width: 80%;
+  max-width: 200px; /* Limitar el ancho máximo para evitar que la imagen se estire demasiado en dispositivos muy anchos */
   will-change: filter;
   transition: filter 300ms;
+  margin: 0 auto; /* Centrar horizontalmente */
 }
 
-.container{
-
-  position: absolute;
-  top: 50%;
+.container {
+  position: relative; /* Cambiado a relativo para que los elementos internos se posicionen correctamente */
   text-align: center;
+  margin-top: 20px; /* Agregado un margen superior para separar del borde superior */
 }
 
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 0.5em #646cffaa); /* Reducido el tamaño de la sombra para que se vea mejor en dispositivos pequeños */
+}
+
+.typewriter {
+  position: relative; /* Cambiado a relativo para que se posicione correctamente dentro del contenedor */
+  display: flex;
+  flex-direction: column; /* Alinear los elementos verticalmente */
+  align-items: center; /* Alinear los elementos horizontalmente */
+}
+
+.typewriter span {
+  font-size: 3em; /* Reducido el tamaño de la fuente para dispositivos más pequeños */
+}
+
+.icon {
+  position: absolute;
+  top: 14%;
+  left: 19%;
+  transform: scale(3);
+}
+
+.icon2 {
+  position: absolute;
+  top: 14%;
+  left: 74%;
+  transform: scale(3);
+}
+
+@media screen and (min-width: 768px) {
+  /* Estilos específicos para pantallas más grandes (tabletas y escritorios) */
+  .logo {
+    width: 100em; /* Ajustar el ancho para pantallas más grandes */
+  }
+  .typewriter{
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    display: flex;
+    transform: translate(-50%, -50%);
+  }
+  .container{
+    margin-top: 25em;
+  }
+
+  .typewriter span {
+    font-size: 4em; /* Reducido el tamaño de la fuente para dispositivos más pequeños */
+  }
+  
+  
+
+  .icon{
+    transform: scale(5);
+    top: 38.5%;
+    left: 40%;
+  }
+  .icon2 {
+    transform: scale(5); /* Ajustar el tamaño de la escala para pantallas más grandes */
+    top: 38.5%;
+    left: 58%;
+  }
+
 }
