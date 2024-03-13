@@ -19,9 +19,11 @@
 }
 
 .typewriter {
-  position: relative; /* Cambiado a relativo para que se posicione correctamente dentro del contenedor */
+  position: absolute; /* Cambiado a relativo para que se posicione correctamente dentro del contenedor */
   flex-direction: column; /* Alinear los elementos verticalmente */
+  left: 50%;
   align-items: center; /* Alinear los elementos horizontalmente */
+  transform: translate(-50%);
 }
 
 .typewriter span {
