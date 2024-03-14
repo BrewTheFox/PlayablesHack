@@ -1,6 +1,5 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './mainsite.tsx'
+import App from './App.tsx'
 import './index.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Totm from './tombofthemask.tsx'

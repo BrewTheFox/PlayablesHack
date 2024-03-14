@@ -1,12 +1,11 @@
 import tomblogo from './assets/TotM_Logo.webp'
 import './App.css'
 import Navbar from './components/Navbar'
-import Typewriter from 'typewriter-effect';
 import { TextareaAutosize } from '@mui/material';
-
-
+import { useState } from 'react';
 
 function Totm() {
+  const [count, setCount] = useState(0)
   return (
     <>
     <Navbar></Navbar>
