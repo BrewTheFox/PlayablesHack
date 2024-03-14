@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import  { redirect } from 'react-router-dom'
 
 const pages = ['Tomb Of The Mask', 'State.io', 'Slice It All', "Draw Climber"];
 
@@ -29,6 +30,10 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  function handlebutton(redirecto) {
+    window.location.replace(redirecto);
+  }
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -38,7 +43,7 @@ function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -58,7 +63,7 @@ function ResponsiveAppBar() {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
+              onClick={handlebutton}
               color="inherit"
             >
               <MenuIcon />
@@ -82,7 +87,7 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handlebutton("./" + page.replaceAll(" ", "-"))}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -93,7 +98,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -111,7 +116,7 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handlebutton("./" + page.replaceAll(" ", "-"))}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}

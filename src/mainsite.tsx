@@ -4,7 +4,6 @@ import statelogo from "./assets/240312_18h04m38s_screenshot-transformed.png"
 import climberlogo from "./assets/240312_18h10m59s_screenshot-transformed.png"
 import './App.css'
 import Navbar from './components/Navbar'
-import TerminalIcon from '@mui/icons-material/Terminal';
 import Typewriter from 'typewriter-effect';
 function App() {
   return (
