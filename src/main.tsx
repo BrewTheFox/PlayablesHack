@@ -10,7 +10,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <Routes>
       <Route index element={<App />} />
       <Route path='/tomb-of-the-mask' element={<Totm/>}/>
-
+      <Route path='/state.io' element={<Totm/>}/>
+      <Route path='/slice-it-all' element={<Totm/>}/>
+      <Route path='/draw-climber' element={<Totm/>}/>
+      
   </Routes>
 </BrowserRouter>
 )
