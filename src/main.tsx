@@ -13,7 +13,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Route path='/state.io' element={<Totm/>}/>
       <Route path='/slice-it-all' element={<Totm/>}/>
       <Route path='/draw-climber' element={<Totm/>}/>
-      
   </Routes>
 </BrowserRouter>
 )

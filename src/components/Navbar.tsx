@@ -10,7 +10,6 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import  { redirect } from 'react-router-dom'
 
 const pages = ['Tomb Of The Mask', 'State.io', 'Slice It All', "Draw Climber"];
 
@@ -30,7 +29,7 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  function handlebutton(redirecto) {
+  function handlebutton(redirecto:string) {
     window.location.replace(redirecto);
   }
 
@@ -63,7 +62,7 @@ function ResponsiveAppBar() {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handlebutton}
+              onClick={handleOpenNavMenu}
               color="inherit"
             >
               <MenuIcon />
