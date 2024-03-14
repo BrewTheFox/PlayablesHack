@@ -26,6 +26,14 @@
   transform: translate(-50%);
 }
 
+.gameicon {
+  width: 100%;
+}
+.gameiconcontainer {
+  width: 100%;
+  text-align: center;
+}
+
 .typewriter span {
   font-size: 3em; /* Reducido el tamaño de la fuente para dispositivos más pequeños */
 }
@@ -47,6 +55,10 @@
   /* Estilos específicos para pantallas más grandes (tabletas y escritorios) */
   .logo {
     width: 100em; /* Ajustar el ancho para pantallas más grandes */
+  }
+  .gameicon{
+
+    width: 50%;
   }
   .typewriter{
     position: absolute;
