@@ -9,7 +9,6 @@ function App() {
   return (
     <>
     <Navbar></Navbar>
-    <div>
     <div className='typewriter'>
     <Typewriter
   options={{
@@ -18,7 +17,6 @@ function App() {
     loop: true,
   }} 
   ></Typewriter>
-  </div>
     </div>
     <div className='container'>
     <div>
