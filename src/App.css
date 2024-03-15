@@ -11,6 +11,12 @@
   text-align: center;
 }
 
+.container button {
+  margin-top: 2%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
 .logo:hover {
   filter: drop-shadow(0 0 0.5em #646cffaa); /* Reducido el tamaño de la sombra para que se vea mejor en dispositivos pequeños */
 }
