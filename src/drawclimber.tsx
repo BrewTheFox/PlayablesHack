@@ -1,4 +1,4 @@
-import tomblogo from './assets/TotM_Logo.webp'
+import tomblogo from './assets/240312_18h10m59s_screenshot-transformed.png'
 import './App.css'
 import Navbar from './components/Navbar'
 import { Button, TextareaAutosize } from '@mui/material';
@@ -18,7 +18,7 @@ interface Headers {
 
 
 
-function Totm() {
+function Drawclimber() {
   const [Headers, setHeaders] = useState<Headers>({});
   const [state, setState] = useState([false, "este es el texto", "danger"]);
   const [vecesAbierto, setAbierto] = useState(0)
@@ -33,8 +33,9 @@ function Totm() {
     };
 
   function updatedatos(key:string, value:number){
-    const datosActualizados = { ...datos[1] };
-    datosActualizados[key] = value;
+    const datosActualizados = { ...datos[1]};
+    datosActualizados["saveData"][key] = value;
+    console.log(datosActualizados)
     setDatos([datos[0], datosActualizados]);
   }
 
@@ -114,7 +115,7 @@ function Totm() {
 
 useEffect(() => {
   if (vecesAbierto >= 1){
-    if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1 && datos[1]["coinsCount"] !== undefined && datos[1]["freeSpins"] !== undefined && datos[1]["energyCount"] !== undefined && datos[1]["pwShieldsCount"] !== undefined) {
+    if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1 && datos[1]["saveData"]["coin"] !== undefined && datos[1]["saveData"]["level"] !== undefined && datos[1]["saveData"]["speedUpgradeLevel"] !== undefined) {
       setState([true, "Toda la info está presente", "success"]);
       setIsVisible("editor")
     } else {
@@ -128,7 +129,7 @@ return (
   <div>
     <Navbar />
     <div className='gameiconcontainer'>
-          <img className="gameicon" src={tomblogo} alt="Logo" />
+          <img width={"30%"} src={tomblogo} alt="Logo" />
         </div>
     {isVisible == "inicio" && (
       <>
@@ -152,34 +153,27 @@ return (
     )}
     {isVisible == "editor" && (
               <div className='datos'>
-              <h1>{"🪙" + datos[1]["coinsCount"] + "🪙"}</h1>
+              <h1>{"🪙" + datos[1]["saveData"]["coin"] + "🪙"}</h1>
               <div>
-              <Button onClick={() => {updatedatos("coinsCount", datos[1]["coinsCount"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("coinsCount", datos[1]["coinsCount"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("coinsCount", datos[1]["coinsCount"] + 100)}} variant="contained">+100</Button>
+              <Button onClick={() => {updatedatos("coin", datos[1]["saveData"]["coin"] - 10)}} variant="contained">-10</Button>
+              <Button onClick={() => {updatedatos("coin", datos[1]["saveData"]["coin"] + 10)}} variant="contained">+10</Button>
+              <Button onClick={() => {updatedatos("coin", datos[1]["saveData"]["coin"] + 100)}} variant="contained">+100</Button>
               </div>
-              <input onChange={(Event) => {updatedatos("coinsCount", parseInt(Event.target.value))}} type="number" min="0" />
-              <h1>{"🔄" + datos[1]["freeSpins"] + "🔄"}</h1>
+              <input onChange={(Event) => {updatedatos("coin", parseInt(Event.target.value))}} type="number" min="0" />
+              <h1>{"📈" + datos[1]["saveData"]["level"] + "📈"}</h1>
               <div>
-              <Button onClick={() => {updatedatos("freeSpins", datos[1]["freeSpins"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("freeSpins", datos[1]["freeSpins"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("freeSpins", datos[1]["freeSpins"] + 100)}} variant="contained">+100</Button>
+              <Button onClick={() => {updatedatos("level", datos[1]["saveData"]["level"] - 10)}} variant="contained">-10</Button>
+              <Button onClick={() => {updatedatos("level", datos[1]["saveData"]["level"] + 10)}} variant="contained">+10</Button>
+              <Button onClick={() => {updatedatos("level", datos[1]["saveData"]["level"] + 100)}} variant="contained">+100</Button>
               </div>
-              <input onChange={(Event) => {updatedatos("freeSpins", parseInt(Event.target.value))}} type="number" min="0" />
-              <h1>{"⚡" + datos[1]["energyCount"] + "⚡"}</h1>
+              <input onChange={(Event) => {updatedatos("level", parseInt(Event.target.value))}} type="number" min="0" />
+              <h1>{"⚡" + datos[1]["saveData"]["speedUpgradeLevel"] + "⚡"}</h1>
               <div>
-              <Button onClick={() => {updatedatos("energyCount", datos[1]["energyCount"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("energyCount", datos[1]["energyCount"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("energyCount", datos[1]["energyCount"] + 100)}} variant="contained">+100</Button>
+              <Button onClick={() => {updatedatos("speedUpgradeLevel", datos[1]["saveData"]["speedUpgradeLevel"] - 10)}} variant="contained">-10</Button>
+              <Button onClick={() => {updatedatos("speedUpgradeLevel", datos[1]["saveData"]["speedUpgradeLevel"] + 10)}} variant="contained">+10</Button>
+              <Button onClick={() => {updatedatos("speedUpgradeLevel", datos[1]["saveData"]["speedUpgradeLevel"] + 100)}} variant="contained">+100</Button>
               </div>
-              <input onChange={(Event) => {updatedatos("energyCount", parseInt(Event.target.value))}} type="number" min="0" />
-              <h1>{"🛡️" + datos[1]["pwShieldsCount"] + "🛡️"}</h1>
-              <div>
-              <Button onClick={() => {updatedatos("pwShieldsCount", datos[1]["pwShieldsCount"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("pwShieldsCount", datos[1]["pwShieldsCount"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("pwShieldsCount", datos[1]["pwShieldsCount"] + 100)}} variant="contained">+100</Button>
-              </div>
-              <input onChange={(Event) => {updatedatos("pwShieldsCount", parseInt(Event.target.value))}} type="number" min="0" />
+              <input onChange={(Event) => {updatedatos("speedUpgradeLevel", parseInt(Event.target.value))}} type="number" min="0" />
               <div>
                 <Button onClick={patchGameData} variant="contained">Parchear datos</Button>
               </div>
@@ -223,4 +217,4 @@ return (
 );
 }
 
-export default Totm
+export default Drawclimber
