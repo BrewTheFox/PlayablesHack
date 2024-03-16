@@ -1,4 +1,4 @@
-import tomblogo from './assets/TotM_Logo.webp'
+import tomblogo from './assets/SliceItAllLogo-transformed.webp'
 import './App.css'
 import Navbar from './components/Navbar'
 import { Button, TextareaAutosize } from '@mui/material';
@@ -18,7 +18,7 @@ interface Headers {
 
 
 
-function Totm() {
+function Sliceit() {
   const [Headers, setHeaders] = useState<Headers>({});
   const [state, setState] = useState([false, "este es el texto", "danger"]);
   const [vecesAbierto, setAbierto] = useState(0)
@@ -114,10 +114,17 @@ function Totm() {
 
 useEffect(() => {
   if (vecesAbierto >= 1){
-    if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1 && datos[1]["coinsCount"] !== undefined && datos[1]["freeSpins"] !== undefined && datos[1]["energyCount"] !== undefined && datos[1]["pwShieldsCount"] !== undefined) {
+    if (
+      Object.keys(datos[1]).length !== 0 &&
+      Object.keys(Headers).length >= 1 &&
+      datos[1]["totalMoney"] !== undefined &&
+      datos[1]["levelNo"] !== undefined
+    ) {
       setState([true, "Toda la info está presente", "success"]);
       setIsVisible("editor")
     } else {
+      console.log(Object.keys(datos[1]))
+      console.log(Object.keys(Headers))
       setState([true, "No toda la info está presente", "error"]);
     }
 }}, [vecesAbierto]);
@@ -128,7 +135,7 @@ return (
   <div>
     <Navbar />
     <div className='gameiconcontainer'>
-          <img className="gameicon" src={tomblogo} alt="Logo" />
+          <img src={tomblogo} alt="Logo" />
         </div>
     {isVisible == "inicio" && (
       <>
@@ -152,34 +159,22 @@ return (
     )}
     {isVisible == "editor" && (
               <div className='datos'>
-              <h1>{"🪙" + datos[1]["coinsCount"] + "🪙"}</h1>
+              <h1>{"🪙" + datos[1]["totalMoney"] + "🪙"}</h1>
               <div>
-              <Button onClick={() => {updatedatos("coinsCount", datos[1]["coinsCount"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("coinsCount", datos[1]["coinsCount"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("coinsCount", datos[1]["coinsCount"] + 100)}} variant="contained">+100</Button>
+              <Button onClick={() => {updatedatos("totalMoney", datos[1]["totalMoney"] - 10)}} variant="contained">-10</Button>
+              <Button onClick={() => {updatedatos("totalMoney", datos[1]["totalMoney"] + 10)}} variant="contained">+10</Button>
+              <Button onClick={() => {updatedatos("totalMoney", datos[1]["totalMoney"] + 100)}} variant="contained">+100</Button>
               </div>
-              <input onChange={(Event) => {updatedatos("coinsCount", parseInt(Event.target.value))}} type="number" min="0" />
-              <h1>{"🔄" + datos[1]["freeSpins"] + "🔄"}</h1>
+              <input onChange={(Event) => {updatedatos("totalMoney", parseInt(Event.target.value))}} type="number" min="0" />
+              <h1>{"📈" + datos[1]["levelNo"] + "📈"}</h1>
               <div>
-              <Button onClick={() => {updatedatos("freeSpins", datos[1]["freeSpins"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("freeSpins", datos[1]["freeSpins"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("freeSpins", datos[1]["freeSpins"] + 100)}} variant="contained">+100</Button>
+              <Button onClick={() => {updatedatos("levelNo", datos[1]["levelNo"] - 10)}} variant="contained">-10</Button>
+              <Button onClick={() => {updatedatos("levelNo", datos[1]["levelNo"] + 10)}} variant="contained">+10</Button>
+              <Button onClick={() => {updatedatos("levelNo", datos[1]["levelNo"] + 100)}} variant="contained">+100</Button>
               </div>
-              <input onChange={(Event) => {updatedatos("freeSpins", parseInt(Event.target.value))}} type="number" min="0" />
-              <h1>{"⚡" + datos[1]["energyCount"] + "⚡"}</h1>
-              <div>
-              <Button onClick={() => {updatedatos("energyCount", datos[1]["energyCount"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("energyCount", datos[1]["energyCount"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("energyCount", datos[1]["energyCount"] + 100)}} variant="contained">+100</Button>
-              </div>
-              <input onChange={(Event) => {updatedatos("energyCount", parseInt(Event.target.value))}} type="number" min="0" />
-              <h1>{"🛡️" + datos[1]["pwShieldsCount"] + "🛡️"}</h1>
-              <div>
-              <Button onClick={() => {updatedatos("pwShieldsCount", datos[1]["pwShieldsCount"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("pwShieldsCount", datos[1]["pwShieldsCount"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("pwShieldsCount", datos[1]["pwShieldsCount"] + 100)}} variant="contained">+100</Button>
-              </div>
-              <input onChange={(Event) => {updatedatos("pwShieldsCount", parseInt(Event.target.value))}} type="number" min="0" />
+
+              <input onChange={(Event) => {updatedatos("levelNo", parseInt(Event.target.value))}} type="number" min="0" />
+
               <div>
                 <Button onClick={patchGameData} variant="contained">Parchear datos</Button>
               </div>
@@ -223,4 +218,4 @@ return (
 );
 }
 
-export default Totm
+export default Sliceit
