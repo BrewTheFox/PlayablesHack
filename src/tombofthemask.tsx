@@ -178,7 +178,7 @@ return (
               </div>
               <input onChange={(Event) => {updatedatos("pwShieldsCount", parseInt(Event.target.value))}} type="number" min="0" />
               <div>
-                <Button onClick={patchGameData} variant="contained">Patch Game data</Button>
+                <Button onClick={patchGameData} variant="contained">Parchear datos</Button>
               </div>
             </div>
     )}
