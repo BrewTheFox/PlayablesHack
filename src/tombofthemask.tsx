@@ -114,7 +114,7 @@ function Totm() {
 
 useEffect(() => {
   if (vecesAbierto >= 1){
-    if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1) {
+    if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1 && datos[1]["coinsCount"] && datos[1]["freeSpins"] && datos[1]["energyCount"] && datos[1]["pwShieldsCount"]) {
       setState([true, "Toda la info está presente", "success"]);
       setIsVisible("editor")
     } else {
