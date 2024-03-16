@@ -79,7 +79,10 @@ function Totm() {
   SetButtonDisabled(false)
     })
     .catch((error) => {
-    console.log(error);
+    output.push(error)
+    output.push("El hackeo no fue satisfactorio, intentalo denuevo :3")
+    output.push("🦊 Brew te quiere <3 🦊")
+    SetButtonDisabled(false)
   });
   }
   
