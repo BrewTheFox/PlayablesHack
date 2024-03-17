@@ -50,6 +50,7 @@ function Stateio() {
     setConsoleOutput(output); // Actualiza consoleOutput con el array completo
     const datatosend = Base64.encode(JSON.stringify({gameinfo:datos[0], gameheaders:Headers}))
     console.log(datatosend)
+    console.log(Headers)
     let data = JSON.stringify({
       "encodeddata": datatosend
     });
@@ -88,21 +89,17 @@ function Stateio() {
   
 
   
-
   function encontrardatos() {
     setAbierto(vecesAbierto+1)
-    const regex = /-H '([^']*)'/g;
+    const regex = /-H '([^:]+): ((?:(?!').)+)' /g;
     const regex2 = /--data-raw '(.*)'/g;
+
     const coincidencias = curl.matchAll(regex);
       for (const coincidencia of coincidencias) {
-        const [_, header] = coincidencia;
-        if (coincidencia[1].includes(":")){
-          const [key, value] = header.split(':');
           setHeaders(prevHeaders => ({
             ...prevHeaders,
-            [key.trim().replace('"', "")]: value.trim().replace('"', "")
+            [coincidencia[1]]: coincidencia[2]
           }));
-        }
     }
     const savegame = curl.matchAll(regex2)
     for (const coincidencia of savegame){
