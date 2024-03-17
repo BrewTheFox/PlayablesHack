@@ -92,25 +92,20 @@ function Drawclimber() {
 
   function encontrardatos() {
     setAbierto(vecesAbierto+1)
-    const regex = /-H '([^']*)'/g;
+    const regex = /-H '([^:]+): ((?:(?!').)+)' /g;
     const regex2 = /--data-raw '(.*)'/g;
     const coincidencias = curl.matchAll(regex);
       for (const coincidencia of coincidencias) {
-        const [_, header] = coincidencia;
-        if (coincidencia[1].includes(":")){
-          const [key, value] = header.split(':');
           setHeaders(prevHeaders => ({
             ...prevHeaders,
-            [key.trim().replace('"', "")]: value.trim().replace('"', "")
+            [coincidencia[1]]: coincidencia[2]
           }));
-        }
     }
     const savegame = curl.matchAll(regex2)
     for (const coincidencia of savegame){
       setDatos([coincidencia[1] , JSON.parse(Base64.decode(coincidencia[1]))])
       break
     } 
-
 }
 
 useEffect(() => {
