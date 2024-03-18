@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Tomb Of The Mask', 'State.io', 'Slice It All', "Draw Climber", "avanzado"];
+const pages = ['Tomb Of The Mask', 'State.io', 'Slice It All', "Draw Climber", "Avanzado"];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
