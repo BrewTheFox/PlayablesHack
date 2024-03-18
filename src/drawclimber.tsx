@@ -110,7 +110,7 @@ function Drawclimber() {
 
 useEffect(() => {
   if (vecesAbierto >= 1){
-    if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1 && datos[1]["saveData"]["coin"] !== undefined && datos[1]["saveData"]["level"] !== undefined && datos[1]["saveData"]["speedUpgradeLevel"] !== undefined) {
+    if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1 && datos[1]["saveData"]["coin"] !== undefined && datos[1]["saveData"]["level"] !== undefined && datos[1]["saveData"]["speedUpgradeLevel"] !== undefined && datos[1]["saveData"] !== undefined) {
       setState([true, "Toda la info está presente", "success"]);
       setIsVisible("editor")
     } else {

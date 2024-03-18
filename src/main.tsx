@@ -6,6 +6,7 @@ import Totm from './tombofthemask.tsx'
 import Stateio from './stateio.tsx'
 import Sliceit from './sliceit.tsx'
 import Drawclimber from './drawclimber.tsx'
+import Advanced from './advanced.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Route path='/state.io' element={<Stateio/>}/>
       <Route path='/slice-it-all' element={<Sliceit/>}/>
       <Route path='/draw-climber' element={<Drawclimber/>}/>
+      <Route path='/avanzado' element={<Advanced/>}/>
   </Routes>
 </BrowserRouter>
 )

@@ -1,4 +1,3 @@
-import tomblogo from './assets/SliceItAllLogo-transformed.webp'
 import './App.css'
 import Navbar from './components/Navbar'
 import { Button, TextareaAutosize } from '@mui/material';
@@ -8,7 +7,8 @@ import Box from '@mui/material/Box';
 import Alert, { AlertColor } from '@mui/material/Alert';
 import { Base64 } from 'js-base64';
 import axios from 'axios';
-
+import React from 'react';
+import Typewriter from 'typewriter-effect';
 
 
 interface Headers {
@@ -18,7 +18,7 @@ interface Headers {
 
 
 
-function Sliceit() {
+function Advanced() {
   const [Headers, setHeaders] = useState<Headers>({});
   const [state, setState] = useState([false, "este es el texto", "danger"]);
   const [vecesAbierto, setAbierto] = useState(0)
@@ -32,7 +32,7 @@ function Sliceit() {
       setState([false, state[1], state[2]]);
     };
 
-  function updatedatos(key:string, value:number){
+  function updatedatos(key: string, value: string | number | boolean | Array<any> | object){
     const datosActualizados = { ...datos[1] };
     datosActualizados[key] = value;
     setDatos([datos[0], datosActualizados]);
@@ -86,8 +86,10 @@ function Sliceit() {
   });
   }
   
-
-  
+  useEffect(() => {
+    console.log(curl);
+    console.log(Headers)
+  }, [curl, Headers]);
 
   function encontrardatos() {
     setAbierto(vecesAbierto+1)
@@ -111,17 +113,10 @@ function Sliceit() {
 
 useEffect(() => {
   if (vecesAbierto >= 1){
-    if (
-      Object.keys(datos[1]).length !== 0 &&
-      Object.keys(Headers).length >= 1 &&
-      datos[1]["totalMoney"] !== undefined &&
-      datos[1]["levelNo"] !== undefined
-    ) {
+    if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1 && datos[1] !== undefined) {
       setState([true, "Toda la info está presente", "success"]);
       setIsVisible("editor")
     } else {
-      console.log(Object.keys(datos[1]))
-      console.log(Object.keys(Headers))
       setState([true, "No toda la info está presente", "error"]);
     }
 }}, [vecesAbierto]);
@@ -132,7 +127,15 @@ return (
   <div>
     <Navbar />
     <div className='gameiconcontainer'>
-          <img width="40%" src={tomblogo} alt="Logo" />
+    <div className='typewriter'>
+    <Typewriter
+  options={{
+    strings: ['#Libertad', '#Editor', '#Avanzado', '#Otros', '#Juegos'],
+    autoStart: true,
+    loop: true,
+  }} 
+  ></Typewriter>
+    </div>
         </div>
     {isVisible == "inicio" && (
       <>
@@ -155,27 +158,77 @@ return (
       </>
     )}
     {isVisible == "editor" && (
-              <div className='datos'>
-              <h1>{"🪙" + datos[1]["totalMoney"] + "🪙"}</h1>
-              <div>
-              <Button onClick={() => {updatedatos("totalMoney", datos[1]["totalMoney"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("totalMoney", datos[1]["totalMoney"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("totalMoney", datos[1]["totalMoney"] + 100)}} variant="contained">+100</Button>
-              </div>
-              <input onChange={(Event) => {updatedatos("totalMoney", parseInt(Event.target.value))}} type="number" min="0" />
-              <h1>{"📈" + datos[1]["levelNo"] + "📈"}</h1>
-              <div>
-              <Button onClick={() => {updatedatos("levelNo", datos[1]["levelNo"] - 10)}} variant="contained">-10</Button>
-              <Button onClick={() => {updatedatos("levelNo", datos[1]["levelNo"] + 10)}} variant="contained">+10</Button>
-              <Button onClick={() => {updatedatos("levelNo", datos[1]["levelNo"] + 100)}} variant="contained">+100</Button>
-              </div>
+        <div className='datos'>
+  {Object.keys(datos[1]).map(key => {
+    const value = datos[1][key];
+    const isString = typeof value === 'string';
+    const isNumber = typeof value === 'number';
+    const isBoolean = typeof value === 'boolean';
+    const isObject = typeof value === 'object' && value !== null && !Array.isArray(value);
 
-              <input onChange={(Event) => {updatedatos("levelNo", parseInt(Event.target.value))}} type="number" min="0" />
+    if (!isString && !isNumber && !isBoolean && !isObject) return null; // Skip other types
 
-              <div>
-                <Button onClick={patchGameData} variant="contained">Parchear datos</Button>
-              </div>
-            </div>
+    return (
+      <div key={key}>
+        {isObject ? (
+          <React.Fragment>
+            <h1>{key}:</h1>
+            {Object.keys(value).map(subKey => {
+              const subValue = value[subKey];
+              const subIsString = typeof subValue === 'string';
+              const subIsNumber = typeof subValue === 'number';
+              const subIsBoolean = typeof subValue === 'boolean';
+
+              if (!subIsString && !subIsNumber && !subIsBoolean) return null; // Skip other types
+
+              return (
+                <div key={subKey}>
+                  <h2>{subKey + ":" + subValue}</h2>
+                  {subIsString ? (
+                    <input onChange={(event) => {updatedatos(key, {...value, [subKey]: event.target.value})}} type="text" value={subValue} />
+                  ) : subIsBoolean ? (
+                    <input onChange={(event) => {updatedatos(subKey, event.target.checked)}} type="checkbox" checked={subValue} />
+                  ) : (
+                    <React.Fragment>
+                      <div>
+                        <Button onClick={() => {updatedatos(key, {...value, [subKey]: subValue - 10})}} variant="contained">-10</Button>
+                        <Button onClick={() => {updatedatos(key, {...value, [subKey]: subValue + 10})}} variant="contained">+10</Button>
+                        <Button onClick={() => {updatedatos(key, {...value, [subKey]: subValue + 100})}} variant="contained">+100</Button>
+                      </div>
+                      <input onChange={(event) => {updatedatos(key, {...value, [subKey]: parseInt(event.target.value)})}} type="number" min="0" />
+                    </React.Fragment>
+                  )}
+                </div>
+              );
+            })}
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <h1>{key + ":" + value}</h1>
+            {isString ? (
+              <input onChange={(event) => {updatedatos(key, event.target.value)}} type="text" value={value} />
+            ) : isBoolean ? (
+                <input onChange={(event) => {updatedatos(key, event.target.checked)}} type="checkbox" checked={value} />
+            ) : (
+              <React.Fragment>
+                <div>
+                  <Button onClick={() => {updatedatos(key, value - 10)}} variant="contained">-10</Button>
+                  <Button onClick={() => {updatedatos(key, value + 10)}} variant="contained">+10</Button>
+                  <Button onClick={() => {updatedatos(key, value + 100)}} variant="contained">+100</Button>
+                </div>
+                <input onChange={(event) => {updatedatos(key, parseInt(event.target.value))}} type="number" min="0" />
+              </React.Fragment>
+            )}
+          </React.Fragment>
+        )}
+      </div>
+    );
+  })}
+  <div>
+    <Button onClick={patchGameData} variant="contained">Parchear datos</Button>
+  </div>
+</div>
+
     )}
 
 {isVisible == "patch" && (
@@ -215,4 +268,4 @@ return (
 );
 }
 
-export default Sliceit
+export default Advanced
