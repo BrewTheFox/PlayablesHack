@@ -32,11 +32,24 @@ function Advanced() {
       setState([false, state[1], state[2]]);
     };
 
-  function updatedatos(key: string, value: string | number | boolean | Array<any> | object){
-    const datosActualizados = { ...datos[1] };
-    datosActualizados[key] = value;
-    setDatos([datos[0], datosActualizados]);
-  }
+    function updatedatos(key: string, value: string | number | boolean | Array<any> | object, path:string) {
+      const claves = path.replace(".","").split(".");
+      let datosActualizados = { ...datos[1] };
+      let currentData = datosActualizados;
+    
+      if (path === "") {
+        datosActualizados[key] = value;
+      } else {
+        const lastKey = claves.pop();
+        for (let dato of claves) {
+          currentData = currentData[dato];
+        }
+        currentData[lastKey as string][key] = value;
+      }
+    
+      setDatos([datos[0], datosActualizados]);
+    }
+      
 
   function patchGameData(){
     setIsVisible("patch")
@@ -111,6 +124,52 @@ function Advanced() {
 
 }
 
+function renderizarJSON(data: any, path: any) {
+  return Object.keys(data).map((key) => {
+    const value = data[key];
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      return (
+        <div key={key}>
+          <h1>{key}:</h1>
+          {renderizarJSON(value, path + "." + key)}
+        </div>
+      );
+    } else if (Array.isArray(value)) {
+      return (
+        <div key={key}>
+          <h1>{key}:</h1>
+          <div>
+            {value.map((item, index) => (
+              <div key={index}>{renderizarJSON(item, path + "." + key + "." + index)}</div>
+            ))}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div key={key}>
+          <h1>{key + ":" + value}</h1>
+          {typeof value === 'string' ? (
+            <input onChange={(event) => { updatedatos(key, event.target.value, path) }} type="text" value={value} />
+          ) : typeof value === 'boolean' ? (
+            <input onChange={(event) => { updatedatos(key, event.target.checked, path) }} type="checkbox" checked={value} />
+          ) : (
+            <React.Fragment>
+              <div>
+                <Button onClick={() => { updatedatos(key, value - 10, path) }} variant="contained">-10</Button>
+                <Button onClick={() => { updatedatos(key, value + 10, path) }} variant="contained">+10</Button>
+                <Button onClick={() => { updatedatos(key, value + 100, path) }} variant="contained">+100</Button>
+              </div>
+              <input onChange={(event) => { updatedatos(key, parseInt(event.target.value), path) }} type="number" min="0" />
+            </React.Fragment>
+          )}
+        </div>
+      );
+    }
+  });
+}
+
+
 useEffect(() => {
   if (vecesAbierto >= 1){
     if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1 && datos[1] !== undefined) {
@@ -157,79 +216,15 @@ return (
 
       </>
     )}
-    {isVisible == "editor" && (
-        <div className='datos'>
-  {Object.keys(datos[1]).map(key => {
-    const value = datos[1][key];
-    const isString = typeof value === 'string';
-    const isNumber = typeof value === 'number';
-    const isBoolean = typeof value === 'boolean';
-    const isObject = typeof value === 'object' && value !== null && !Array.isArray(value);
 
-    if (!isString && !isNumber && !isBoolean && !isObject) return null; // Skip other types
-
-    return (
-      <div key={key}>
-        {isObject ? (
-          <React.Fragment>
-            <h1>{key}:</h1>
-            {Object.keys(value).map(subKey => {
-              const subValue = value[subKey];
-              const subIsString = typeof subValue === 'string';
-              const subIsNumber = typeof subValue === 'number';
-              const subIsBoolean = typeof subValue === 'boolean';
-
-              if (!subIsString && !subIsNumber && !subIsBoolean) return null; // Skip other types
-
-              return (
-                <div key={subKey}>
-                  <h2>{subKey + ":" + subValue}</h2>
-                  {subIsString ? (
-                    <input onChange={(event) => {updatedatos(key, {...value, [subKey]: event.target.value})}} type="text" value={subValue} />
-                  ) : subIsBoolean ? (
-                    <input onChange={(event) => {updatedatos(subKey, event.target.checked)}} type="checkbox" checked={subValue} />
-                  ) : (
-                    <React.Fragment>
-                      <div>
-                        <Button onClick={() => {updatedatos(key, {...value, [subKey]: subValue - 10})}} variant="contained">-10</Button>
-                        <Button onClick={() => {updatedatos(key, {...value, [subKey]: subValue + 10})}} variant="contained">+10</Button>
-                        <Button onClick={() => {updatedatos(key, {...value, [subKey]: subValue + 100})}} variant="contained">+100</Button>
-                      </div>
-                      <input onChange={(event) => {updatedatos(key, {...value, [subKey]: parseInt(event.target.value)})}} type="number" min="0" />
-                    </React.Fragment>
-                  )}
-                </div>
-              );
-            })}
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <h1>{key + ":" + value}</h1>
-            {isString ? (
-              <input onChange={(event) => {updatedatos(key, event.target.value)}} type="text" value={value} />
-            ) : isBoolean ? (
-                <input onChange={(event) => {updatedatos(key, event.target.checked)}} type="checkbox" checked={value} />
-            ) : (
-              <React.Fragment>
-                <div>
-                  <Button onClick={() => {updatedatos(key, value - 10)}} variant="contained">-10</Button>
-                  <Button onClick={() => {updatedatos(key, value + 10)}} variant="contained">+10</Button>
-                  <Button onClick={() => {updatedatos(key, value + 100)}} variant="contained">+100</Button>
-                </div>
-                <input onChange={(event) => {updatedatos(key, parseInt(event.target.value))}} type="number" min="0" />
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        )}
-      </div>
-    );
-  })}
-  <div>
-    <Button onClick={patchGameData} variant="contained">Parchear datos</Button>
+{isVisible === "editor" && (
+  <div className='datos'>
+    {renderizarJSON(datos[1], "")}
+    <div>
+      <Button onClick={patchGameData} variant="contained">Parchear datos</Button>
+    </div>
   </div>
-</div>
-
-    )}
+)}
 
 {isVisible == "patch" && (
       <>
