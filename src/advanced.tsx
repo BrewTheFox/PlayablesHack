@@ -62,7 +62,6 @@ function Advanced() {
     output.push("Enviando datos..."); // Agrega el valor de i a output
     setConsoleOutput(output); // Actualiza consoleOutput con el array completo
     const datatosend = Base64.encode(JSON.stringify({gameinfo:datos[0], gameheaders:Headers}))
-    console.log(datatosend)
     let data = JSON.stringify({
       "encodeddata": datatosend
     });
