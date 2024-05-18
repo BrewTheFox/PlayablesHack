@@ -5,7 +5,7 @@ import climberlogo from "./assets/240312_18h10m59s_screenshot-transformed.png"
 import './App.css'
 import Navbar from './components/Navbar'
 import Typewriter from 'typewriter-effect';
-
+//Esto es basicamente la pagina de inicio
 
 function App() {
   return (
