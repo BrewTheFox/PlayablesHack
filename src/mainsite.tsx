@@ -1,7 +1,7 @@
 import tomblogo from './assets/TotM_Logo.webp'
-import slicelogo from './assets/SliceItAllLogo-transformed.webp'
-import statelogo from "./assets/240312_18h04m38s_screenshot-transformed.png"
-import climberlogo from "./assets/240312_18h10m59s_screenshot-transformed.png"
+import slicelogo from './assets/sliceit.webp'
+import statelogo from "./assets/stateio.png"
+import climberlogo from "./assets/drawclimber.png"
 import './App.css'
 import Navbar from './components/Navbar'
 import Typewriter from 'typewriter-effect';

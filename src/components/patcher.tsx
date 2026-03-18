@@ -1,5 +1,4 @@
-import './App.css'
-import Navbar from './components/Navbar'
+import Navbar from './Navbar'
 import { Button, TextareaAutosize } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Snackbar from '@mui/material/Snackbar';
@@ -15,10 +14,11 @@ interface Headers {
   [key: string]: string;
 }
 
+interface PatcherProps {
+  logo?: string;
+}
 
-
-
-function Advanced() {
+export default function Patcher(props:PatcherProps) {
   const [Headers, setHeaders] = useState<Headers>({});
   const [state, setState] = useState([false, "este es el texto", "danger"]);
   const [vecesAbierto, setAbierto] = useState(0)
@@ -84,7 +84,7 @@ function Advanced() {
     output.push("Validado, hackeo correcto OwO")
   }
   else {
-    output.push("El hackeo no fue satisfactorio, intentalo denuevo :3")
+    output.push("El hackeo no fue satisfactorio, intentalo de nuevo :3")
   }
   output.push("🦊 Brew te quiere <3 🦊")
   setConsoleOutput(output)
@@ -92,7 +92,7 @@ function Advanced() {
     })
     .catch((error) => {
     output.push(error)
-    output.push("El hackeo no fue satisfactorio, intentalo denuevo :3")
+    output.push("El hackeo no fue satisfactorio, intentalo de nuevo :3")
     output.push("🦊 Brew te quiere <3 🦊")
     SetButtonDisabled(false)
   });
@@ -185,16 +185,23 @@ return (
   <div>
     <Navbar />
     <div className='gameiconcontainer'>
+    {typeof props.logo == "undefined" && (
     <div className='typewriter'>
-    <Typewriter
-  options={{
-    strings: ['#Libertad', '#Editor', '#Avanzado', '#Otros', '#Juegos'],
-    autoStart: true,
-    loop: true,
-  }} 
-  ></Typewriter>
+        <Typewriter
+        options={{
+            strings: ['#Libertad', '#Editor', '#Avanzado', '#Otros', '#Juegos'],
+            autoStart: true,
+            loop: true,
+        }} 
+        
+  />
+  </div>)}
+  {typeof props.logo == "string" && (
+    <div className='gameiconcontainer'>
+        <img src={props.logo} className='biglogo' alt="Logo" />
     </div>
-        </div>
+  )}
+    </div>
     {isVisible == "inicio" && (
       <>
         <div className='supracontainer'>
@@ -261,5 +268,3 @@ return (
   
 );
 }
-
-export default Advanced

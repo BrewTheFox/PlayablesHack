@@ -6,6 +6,15 @@
   margin: 0 auto; /* Centrar horizontalmente */
 }
 
+.biglogo {
+  width: 80%;
+  max-width: 400px;
+  will-change: filter;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  transition: filter 300ms;
+}
+
 input[type="checkbox"] {
   font: inherit;
   color: currentColor;
