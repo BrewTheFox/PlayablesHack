@@ -1,173 +1,31 @@
-.logo {
-  width: 80%;
-  max-width: 200px; /* Limitar el ancho máximo para evitar que la imagen se estire demasiado en dispositivos muy anchos */
-  will-change: filter;
-  transition: filter 300ms;
-  margin: 0 auto; /* Centrar horizontalmente */
-}
-
-.biglogo {
-  width: 80%;
-  max-width: 400px;
-  will-change: filter;
-  margin-top: 50px;
-  margin-bottom: 50px;
-  transition: filter 300ms;
-}
-
-input[type="checkbox"] {
-  font: inherit;
-  color: currentColor;
-  width: 1.15em;
-  height: 1.15em;
-  border: 0.15em solid currentColor;
-  border-radius: 0.15em;
-}
-
-.container {
-  width: 100%;
-  text-align: center;
-}
-
-.container button {
-  margin-top: 2%;
-  margin-left: 10%;
-  margin-right: 10%;
-}
-
-.datos{
-  text-align: center;
-}
-
-.datos button {
-  margin-bottom: 2%;
-  margin-left: 2%;
-}
-
-.datos input {
-  width: 40%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.console {
-  background-color: #110f11c7;
-  color: #fff;
-  font-family: monospace;
-  padding: 10px;
-  border-radius: 5px;
-  width: 70%;
-}
-
-.holder{
+.apptitle {
   display: flex;
-  justify-content: center; /* Centra el contenido horizontalmente */
-  align-items: center;
-  transform: translate();
-}
-
-.holder button {
-  margin-top: 2%;
-}
-
-.console-output {
-  text-align: start;
-  height: 200px;
-  overflow-y: auto;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 0.5em #646cffaa); /* Reducido el tamaño de la sombra para que se vea mejor en dispositivos pequeños */
-}
-
-.typewriter {
+  justify-content: center;
   align-content: center;
   text-align: center;
-  margin-bottom: 8rem;
-  margin-top: 8rem;
 }
 
-.gameicon {
-  width: 100%;
-}
-.gameiconcontainer {
-  width: 100%;
-  text-align: center;
-}
-
-.typewriter span {
-  font-size: 3em; /* Reducido el tamaño de la fuente para dispositivos más pequeños */
+.maincard {
+  width: 80%;
+  max-width: 90vw;
+  height: 75vh;
+  max-height: 75vh;
 }
 
-
-
-.textarea {
-  width: 100%;
-  border: none;
-  resize: none;
-  font-family: Consolas, monospace;
-  font-size: 14px;
-  line-height: 20px;
-  outline: none;
-  background-color: transparent;
-}
-
-.codecontainer {
-  display: flex;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  min-height: 200px;
-}
-
-.supracontainer {
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
+.carditem {
+  height: 70vh;
+  max-height: 70vh;
 }
 
 @media screen and (min-width: 768px) {
-  /* Estilos específicos para pantallas más grandes (tabletas y escritorios) */
-  .logo {
-    width: 100em; /* Ajustar el ancho para pantallas más grandes */
+  .maincard {
+    height: auto;
+    min-height: 50vh;
+    max-width: 50vw;
   }
 
-  .codecontainer {
-    width: 50%;
+  .carditem {
+    height: 50vh;
+    max-height: 50vh;
   }
-  .gameicon{
-    width: 50%;
-  }
-  .typewriter{
-    align-content: center;
-    text-align: center;
-
-  }
-
-  .typewriter span {
-    font-size: 4em; /* Reducido el tamaño de la fuente para dispositivos más pequeños */
-  }
-  
-  .console {
-    width: 40%;
-  }
-
-  .icon{
-    position: absolute;
-    transform: scale(5);
-    bottom: 40%;
-    left: -90%;
-  }
-  .icon2 {
-    position: absolute;
-    transform: scale(5); /* Ajustar el tamaño de la escala para pantallas más grandes */
-
-  }
-
 }

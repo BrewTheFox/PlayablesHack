@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Route path='/state.io' element={<Patcher logo={stateio}/>}/>
       <Route path='/slice-it-all' element={<Patcher logo={sliceit}/>}/>
       <Route path='/draw-climber' element={<Patcher logo={drawclimber}/>}/>
-      <Route path='/avanzado' element={<Patcher/>}/>
+      <Route path='/advanced' element={<Patcher/>}/>
   </Routes>
 </BrowserRouter>
 )

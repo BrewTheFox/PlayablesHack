@@ -1,49 +1,40 @@
-import tomblogo from './assets/TotM_Logo.webp'
-import slicelogo from './assets/sliceit.webp'
-import statelogo from "./assets/stateio.png"
-import climberlogo from "./assets/drawclimber.png"
-import './App.css'
-import Navbar from './components/Navbar'
-import Typewriter from 'typewriter-effect';
+import "./App.css";
+import ScrambledText from "./components/ReactBits/ScrambledText";
+import NavDock from "./components/navdock";
+import Background from "./components/background";
 //Esto es basicamente la pagina de inicio
+
+const phrases = [
+  "Choose the desired game...",
+  "V2 Design",
+  "Why am I doing this...",
+  "Giving free items since 2024",
+  "Please use the dock!",
+];
 
 function App() {
   return (
-    <>
-    <Navbar></Navbar>
-    <div className='typewriter'>
-    <Typewriter
-  options={{
-    strings: ['HACK', 'IT', 'IF', 'YOU', 'CAN'],
-    autoStart: true,
-    loop: true,
-  }} 
-  ></Typewriter>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        overflow: "hidden",
+        margin: 0,
+      }}
+    >
+      <Background />
+      <div className="apptitle z-2 absolute w-[100vw]">
+        <ScrambledText>
+          {phrases[Math.floor(Math.random() * phrases.length)]}
+        </ScrambledText>
+      </div>
+      <NavDock />
     </div>
-    <div className='container'>
-    <div>
-      <a href='./Tomb-Of-The-Mask'>
-      <img className="logo" src={tomblogo}/>
-      </a>
-    </div>
-    <div>
-    <a href='./Slice-It-All'>
-      <img className="logo" src={slicelogo}/>
-      </a>
-    </div>
-    <div>
-    <a href='./state.io'>
-      <img className="logo" src={statelogo}/>
-      </a>
-    </div>
-    <div>
-    <a href='./Draw-Climber'>
-      <img className="logo" src={climberlogo}/>
-      </a>
-    </div>
-    </div>
-    </>
-  )
+  );
 }
 
-export default App
+export default App;

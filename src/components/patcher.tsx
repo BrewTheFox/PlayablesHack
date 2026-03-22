@@ -1,16 +1,16 @@
-import Navbar from './Navbar'
-import { Button, TextareaAutosize } from '@mui/material';
-import { useState, useEffect } from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import Box from '@mui/material/Box';
-import Alert, { AlertColor } from '@mui/material/Alert';
-import { Base64 } from 'js-base64';
-import axios from 'axios';
-import React from 'react';
-import Typewriter from 'typewriter-effect';
+import { useState, useEffect } from "react";
+import { Base64 } from "js-base64";
+import axios from "axios";
+import Background from "./background";
+import { Sparkles } from "lucide-react";
+import ModNav from "./newnavbar";
+import ScrambledText from "./ReactBits/ScrambledText";
+import { toast, Toaster } from "sonner";
+import Start from "./slides/start";
+import Patch from "./slides/patch";
+import Editor from "./slides/editor";
 
-
-interface Headers {
+interface HeaderType {
   [key: string]: string;
 }
 
@@ -18,253 +18,237 @@ interface PatcherProps {
   logo?: string;
 }
 
-export default function Patcher(props:PatcherProps) {
-  const [Headers, setHeaders] = useState<Headers>({});
-  const [state, setState] = useState([false, "este es el texto", "danger"]);
-  const [vecesAbierto, setAbierto] = useState(0)
-  const [curl, setCurl] = useState("")
-  const [datos, setDatos] = useState<[string, { [key: string]: any }]>(["base64", {}]);
-  const [isVisible, setIsVisible] = useState("inicio");
-  const [consoleOutput, setConsoleOutput] = useState<Array<string>>(["Hackeo iniciado."]);
-  const [IsButtonDisabled, SetButtonDisabled] = useState(false)
-  
-    const handleClose = () => {
-      setState([false, state[1], state[2]]);
-    };
+export default function Patcher(props: PatcherProps) {
+  const [headers, setHeaders] = useState<HeaderType>({});
+  const [timesOpen, setTimesOpen] = useState(0);
+  const [curl, setCurl] = useState("");
+  const [bgColor, setBgColor] = useState("#0000002f");
+  const [backup, setBackup] = useState({});
+  const [patched, setPatched] = useState<any>({});
+  const [Visible, setVisible] = useState("start");
+  const [isValid, setValid] = useState(false);
+  const [consoleOutput, setConsoleOutput] = useState<Array<string>>([
+    "Patching Started.",
+  ]);
+  const [isButtonDisabled, SetbuttonDisabled] = useState(false);
 
-    function updatedatos(key: string, value: string | number | boolean | Array<any> | object, path:string) {
-      const claves = path.replace(".","").split(".");
-      let datosActualizados = { ...datos[1] };
-      let currentData = datosActualizados;
-    
-      if (path === "") {
-        datosActualizados[key] = value;
-      } else {
-        const lastKey = claves.pop();
-        for (let dato of claves) {
-          currentData = currentData[dato];
+  let requestConfig = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://playablesback.vercel.app/do-request/",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: "",
+  };
+
+  function startPatch() {
+    setVisible("patch");
+    setBgColor("#0000002f");
+  }
+
+  function restore() {
+    SetbuttonDisabled(true);
+    const output: Array<string> = [...consoleOutput];
+    output.push("Sending the original data to the server...");
+    setConsoleOutput(output);
+
+    const datatosend = Base64.encode(
+      JSON.stringify({
+        gameinfo: Base64.encode(JSON.stringify(backup)),
+        gameheaders: headers,
+      })
+    );
+
+    let data = JSON.stringify({
+      encodeddata: datatosend,
+    });
+
+    requestConfig["data"] = data;
+
+    axios
+      .request(requestConfig)
+      .then((response) => {
+        const output: Array<string> = [...consoleOutput];
+        output.push(JSON.stringify(response.data));
+        output.push("Data was sent.");
+        output.push("Validating restore...");
+        if (JSON.stringify(response.data) === '{"status":200}') {
+          output.push("Got a positive response OwO");
+        } else {
+          output.push(
+            "Oops. It seems that your YouTube cookie has expired, try it again."
+          );
         }
-        currentData[lastKey as string][key] = value;
-      }
-    
-      setDatos([datos[0], datosActualizados]);
-    }
-      
-
-  function patchGameData(){
-    setIsVisible("patch")
-    setDatos([Base64.encode(JSON.stringify(datos[1])), datos[1]])
+        output.push("🦊 Thank you for trusting in this fox :3 🦊");
+        setConsoleOutput(output);
+        SetbuttonDisabled(false);
+      })
+      .catch((error) => {
+        output.push(error);
+        output.push("Oops. We had an unknown browser error :(");
+        output.push("🦊 Thank you for trusting in this fox :3 🦊");
+        SetbuttonDisabled(false);
+      });
   }
 
   function sendData() {
-    SetButtonDisabled(true)
+    SetbuttonDisabled(true);
     const output: Array<string> = [...consoleOutput]; // Inicializa output con el valor de consoleOutput
-    output.push("Enviando datos..."); // Agrega el valor de i a output
+    output.push("Sending patched data to the server..."); // Agrega el valor de i a output
     setConsoleOutput(output); // Actualiza consoleOutput con el array completo
-    const datatosend = Base64.encode(JSON.stringify({gameinfo:datos[0], gameheaders:Headers}))
+    const datatosend = Base64.encode(
+      JSON.stringify({
+        gameinfo: Base64.encode(JSON.stringify(patched)),
+        gameheaders: headers,
+      })
+    );
+
     let data = JSON.stringify({
-      "encodeddata": datatosend
+      encodeddata: datatosend,
     });
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'https://playablesback.vercel.app/do-request/',
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-      data : data
-    };
-    axios.request(config)
-    .then((response) => {
-  const output: Array<string> = [...consoleOutput];
-  output.push(JSON.stringify(response.data));
-  output.push("Datos enviados correctamente.");
-  output.push("Validando...");
-  if (JSON.stringify(response.data) === '{"status":200}') {
-    output.push("Validado, hackeo correcto OwO")
+
+    requestConfig["data"] = data;
+
+    axios
+      .request(requestConfig)
+      .then((response) => {
+        const output: Array<string> = [...consoleOutput];
+        output.push(JSON.stringify(response.data));
+        output.push("Data was sent.");
+        output.push("Validating patch...");
+        if (JSON.stringify(response.data) === '{"status":200}') {
+          output.push("Got a positive response OwO");
+        } else {
+          output.push(
+            "Oops. It seems that your YouTube cookie expired, try it again."
+          );
+        }
+        output.push("🦊 Thank you for trusting in this fox :3 🦊");
+        setConsoleOutput(output);
+        SetbuttonDisabled(false);
+      })
+      .catch((error) => {
+        output.push(error);
+        output.push("Oops. We had an unknown browser error :(");
+        output.push("🦊 Thank you for trusting in this fox :3 🦊");
+        SetbuttonDisabled(false);
+      });
   }
-  else {
-    output.push("El hackeo no fue satisfactorio, intentalo de nuevo :3")
-  }
-  output.push("🦊 Brew te quiere <3 🦊")
-  setConsoleOutput(output)
-  SetButtonDisabled(false)
-    })
-    .catch((error) => {
-    output.push(error)
-    output.push("El hackeo no fue satisfactorio, intentalo de nuevo :3")
-    output.push("🦊 Brew te quiere <3 🦊")
-    SetButtonDisabled(false)
-  });
-  }
-  
+
   useEffect(() => {
     console.log(curl);
-    console.log(Headers)
-  }, [curl, Headers]);
+    console.log(headers);
+  }, [curl, headers]);
 
-  function encontrardatos() {
-    setAbierto(vecesAbierto+1)
+  function parseData() {
+    setTimesOpen(timesOpen + 1);
     const regex = /-H '([^:]+): ((?:(?!').)+)' /g;
     const regex2 = /--data-raw '(.*)'/g;
 
-    const coincidencias = curl.matchAll(regex);
-      for (const coincidencia of coincidencias) {
-          setHeaders(prevHeaders => ({
-            ...prevHeaders,
-            [coincidencia[1]]: coincidencia[2]
-          }));
+    const matches = curl.matchAll(regex);
+    for (const match of matches) {
+      setHeaders((prevHeaders) => ({
+        ...prevHeaders,
+        [match[1]]: match[2],
+      }));
     }
-    const savegame = curl.matchAll(regex2)
-    for (const coincidencia of savegame){
-      setDatos([coincidencia[1] , JSON.parse(Base64.decode(coincidencia[1]))])
-      break
-    } 
+    const savegame = curl.matchAll(regex2);
+    let decoded = "";
+    for (const match of savegame) {
+      try {
+        decoded = Base64.decode(match[1]);
+      } catch {
+        toast.error("Invalid encoding data!", { position: "bottom-center" });
+        break;
+      }
 
-}
-
-function renderizarJSON(data: any, path: any) {
-  return Object.keys(data).map((key) => {
-    const value = data[key];
-    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-      return (
-        <div key={key}>
-          <h1>{key}:</h1>
-          {renderizarJSON(value, path + "." + key)}
-        </div>
-      );
-    } else if (Array.isArray(value)) {
-      return (
-        <div key={key}>
-          <h1>{key}:</h1>
-          <div>
-            {value.map((item, index) => (
-              <div key={index}>{renderizarJSON(item, path + "." + key + "." + index)}</div>
-            ))}
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div key={key}>
-          <h1>{key + ":" + value}</h1>
-          {typeof value === 'string' ? (
-            <input onChange={(event) => { updatedatos(key, event.target.value, path) }} type="text" value={value} />
-          ) : typeof value === 'boolean' ? (
-            <input onChange={(event) => { updatedatos(key, event.target.checked, path) }} type="checkbox" checked={value} />
-          ) : (
-            <React.Fragment>
-              <div>
-                <Button onClick={() => { updatedatos(key, value - 10, path) }} variant="contained">-10</Button>
-                <Button onClick={() => { updatedatos(key, value + 10, path) }} variant="contained">+10</Button>
-                <Button onClick={() => { updatedatos(key, value + 100, path) }} variant="contained">+100</Button>
-              </div>
-              <input onChange={(event) => { updatedatos(key, parseInt(event.target.value), path) }} type="number" min="0" />
-            </React.Fragment>
-          )}
-        </div>
-      );
+      try {
+        let parsed = JSON.parse(decoded);
+        setValid(true);
+        setBackup(parsed);
+        setPatched(parsed);
+      } catch {
+        setValid(false);
+        toast.error("Invalid json data!", { position: "bottom-center" });
+      }
     }
-  });
-}
+  }
 
-
-useEffect(() => {
-  if (vecesAbierto >= 1){
-    if (Object.keys(datos[1]).length !== 0 && Object.keys(Headers).length >= 1 && datos[1] !== undefined) {
-      setState([true, "Toda la info está presente", "success"]);
-      setIsVisible("editor")
-    } else {
-      setState([true, "No toda la info está presente", "error"]);
+  useEffect(() => {
+    if (timesOpen >= 1) {
+      if (
+        isValid &&
+        Object.keys(headers).length >= 1 &&
+        patched !== undefined
+      ) {
+        toast.success("Data was found!", { position: "bottom-center" });
+        setBgColor("#0d1117");
+        setVisible("editor");
+      }
     }
-}}, [vecesAbierto]);
+  }, [timesOpen]);
 
+  return (
+    <div style={{ position: "relative", minHeight: "100vh" }}>
+      <ModNav />
 
-
-return (
-  <div>
-    <Navbar />
-    <div className='gameiconcontainer'>
-    {typeof props.logo == "undefined" && (
-    <div className='typewriter'>
-        <Typewriter
-        options={{
-            strings: ['#Libertad', '#Editor', '#Avanzado', '#Otros', '#Juegos'],
-            autoStart: true,
-            loop: true,
-        }} 
-        
-  />
-  </div>)}
-  {typeof props.logo == "string" && (
-    <div className='gameiconcontainer'>
-        <img src={props.logo} className='biglogo' alt="Logo" />
-    </div>
-  )}
-    </div>
-    {isVisible == "inicio" && (
-      <>
-        <div className='supracontainer'>
-          <div className="codecontainer">
-            <TextareaAutosize
-              className="textarea"
-              aria-label="code"
-              placeholder="Escribe el codigo curl..."
-              minRows={20} // Número mínimo de filas
-              onChange={(Event) => {setCurl(Event.target.value)}}
-            />
-          </div>
-        </div>
-        <div className='container'>
-          <Button onClick={encontrardatos} variant="outlined">Leer cURL</Button>
-          <Button variant="outlined">Como?</Button>
-        </div>
-
-      </>
-    )}
-
-{isVisible === "editor" && (
-  <div className='datos'>
-    {renderizarJSON(datos[1], "")}
-    <div>
-      <Button onClick={patchGameData} variant="contained">Parchear datos</Button>
-    </div>
-  </div>
-)}
-
-{isVisible == "patch" && (
-      <>
-      <div className='holder'>
-      <h1>Game Patcher</h1>
-      </div>
-      <div className='holder'>
-      <div className="console">
-      <div className="console-output">
-        {consoleOutput.map((output, index) => (
-          <div key={index}> {"> "+output} </div>
-        ))}
-      </div>
-      <Button disabled={IsButtonDisabled} onClick={sendData}>Enviar?</Button>
-    </div>
-    </div>
-    <div className='holder'>
-    <Button onClick={() => {window.location.replace("./");}} variant="contained">Volver</Button>
-    </div>
-      </>
-    )}
-            <Box sx={{ width: 500 }}>
-          <Snackbar
-            anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
-            open={state[0] === true}
-            onClose={handleClose}
-            key={"bottom" + "center"}
+      <div style={{ padding: "2.5em" }}></div>
+      <div style={{ position: "relative", zIndex: 2 }}>
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
+        >
+          <div
+            className="shadow-[0px_4px_50px_27px_rgba(0,_0,_0,_0.3)] maincard rounded-sm backdrop-blur-xs mb-[40px]"
+            style={{ backgroundColor: bgColor }}
           >
-            <Alert severity={state[2] as AlertColor} onClose={handleClose}>
-              {state[1]}
-            </Alert>
-          </Snackbar>
-        </Box>
-  </div>
-  
-);
+            <div className="flex items-center justify-center min-w-[50vw] bg-[#232b2baf] rounded-t-sm">
+              <Sparkles
+                className="mr-[1vw]"
+                width="3vmax"
+                height="3vmax"
+                color="white"
+              />
+              {typeof props.logo == "undefined" && (
+                <div>
+                  <ScrambledText style={{fontSize:"3vmax"}}>
+                    Advanced
+                  </ScrambledText>
+                </div>
+              )}
+              {typeof props.logo == "string" && (
+                <img src={props.logo} width={130}></img>
+              )}
+              <Sparkles
+                className="ml-[1vw]"
+                width="3vmax"
+                height="3vmax"
+                color="white"
+              />
+            </div>
+            {Visible == "start" && (
+              <Start setCurl={setCurl} parseFunction={parseData} />
+            )}
+            {Visible == "editor" && (
+              <Editor
+                setPatched={setPatched}
+                startPatch={startPatch}
+                data={backup}
+              />
+            )}
+            {Visible == "patch" && (
+              <Patch
+                ConsoleOutput={consoleOutput}
+                ButtonStatus={isButtonDisabled}
+                SendPatch={sendData}
+                Restore={restore}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+      <Toaster richColors theme="dark" />
+      <Background />
+    </div>
+  );
 }
